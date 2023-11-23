@@ -20,4 +20,4 @@ const LEVEL_1_INIT_POSITION = Vector2(0, 0)
 const STAGES = [LEVEL_1]
 
 # 現在のグリッド状態の管理
-var draw_grid: Array
+var draw_grid = []

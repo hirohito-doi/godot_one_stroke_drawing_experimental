@@ -14,14 +14,20 @@ func _ready() -> void:
 
 
 func _process(delta:float) -> void:
+	var move_vector = Vector2.ZERO
+
 	if Input.is_action_pressed("left"):
-		try_move(Vector2.LEFT)
-	elif Input.is_action_pressed("right"):
-		try_move(Vector2.RIGHT)
-	elif Input.is_action_pressed("up"):
-		try_move(Vector2.UP)
-	elif Input.is_action_pressed("down"):
-		try_move(Vector2.DOWN)
+		move_vector.x -= 1
+	if Input.is_action_pressed("right"):
+		move_vector.x += 1
+	if Input.is_action_pressed("up"):
+		move_vector.y -= 1
+	if Input.is_action_pressed("down"):
+		move_vector.y += 1
+	
+	# 上下左右一方向のみの移動の場合に処理を実行する
+	if move_vector != Vector2.ZERO and !(move_vector.x != 0 and move_vector.y != 0):
+		try_move(move_vector)
 
 
 # 操作キャラクターをLEVELの初期位置に配置する
