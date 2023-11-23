@@ -47,8 +47,8 @@ func try_move(direction: Vector2) -> void:
 		# 移動中か
 		is_moving
 		# エリア範囲内か
-		or new_position.x < 0 or Global.GRID_SIZE - 1 < new_position.x
-		or new_position.y < 0 or Global.GRID_SIZE - 1 < new_position.y 
+		or new_position.x < 0 or Global.GRID_DIMENSION - 1 < new_position.x
+		or new_position.y < 0 or Global.GRID_DIMENSION - 1 < new_position.y 
 		# 移動先が移動可能エリアか
 		or Global.draw_grid[new_position.y][new_position.x] != Global.CELL_STATUS.NOT_DRAWN
 	):

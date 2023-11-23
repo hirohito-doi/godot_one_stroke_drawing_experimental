@@ -1,7 +1,7 @@
 extends Node
 
 const TILE_SIZE = 48
-const GRID_SIZE = 4 # 最大4*4
+const GRID_DIMENSION = 4 # グリッドの1辺の長さ
 
 enum CELL_STATUS {EMPTY, NOT_DRAWN, DRAWN}
 

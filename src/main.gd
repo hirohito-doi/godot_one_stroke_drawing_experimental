@@ -25,8 +25,8 @@ func _on_character_moved_cell(x:int, y:int) -> void:
 
 # 現在のLEVEL用にタイルマップを置き換える
 func set_tile_map() -> void:
-	for y in range(Global.GRID_SIZE):
-		for x in range(Global.GRID_SIZE):
+	for y in range(Global.GRID_DIMENSION):
+		for x in range(Global.GRID_DIMENSION):
 			var cell = Global.draw_grid[y][x]
 			var tile_coords = Global.TILE_DRAWN_COORDS if cell == Global.CELL_STATUS.DRAWN else Global.TILE_NOT_DRAWN_COORDS
 			$TileMap.set_cell(0, Vector2(x, y), 0, tile_coords)
