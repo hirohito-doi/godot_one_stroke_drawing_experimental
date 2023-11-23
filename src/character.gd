@@ -4,11 +4,16 @@ signal moved_cell(x, y)
 
 var is_moving = false
 
+var position_zero: Vector2
 var grid_position = Vector2.ZERO
 var position_history = []
 
 
-func _process(delta):
+func _ready() -> void:
+	position_zero = Vector2(texture.get_width() / 2, texture.get_height() / 2)
+
+
+func _process(delta:float) -> void:
 	if Input.is_action_pressed("left"):
 		try_move(Vector2.LEFT)
 	elif Input.is_action_pressed("right"):
@@ -19,23 +24,28 @@ func _process(delta):
 		try_move(Vector2.DOWN)
 
 
+# 操作キャラクターをLEVELの初期位置に配置する
+func init_position(level:int) -> void:
+	# TODO: LEVELに合わせた初期位置の設定
+	position = position_zero + (Global.LEVEL_1_INIT_POSITION * Global.TILE_SIZE)
+	grid_position = Global.LEVEL_1_INIT_POSITION
+
+
 # 移動判定
 func try_move(direction: Vector2) -> void:
-	# 移動可能か
-	# 移動中であれば何もしない
-	if is_moving:
-		return
-	
-	# 移動後のポジション
+	# 移動後の位置
 	var new_position = grid_position + direction
-	# エリア範囲内か
+	
+	# 移動可能か判定する
 	if (
-		new_position.x < 0 or Global.GRID_SIZE - 1 < new_position.x
+		# 移動中か
+		is_moving
+		# エリア範囲内か
+		or new_position.x < 0 or Global.GRID_SIZE - 1 < new_position.x
 		or new_position.y < 0 or Global.GRID_SIZE - 1 < new_position.y 
+		# 移動先が移動可能エリアか
+		or Global.draw_grid[new_position.y][new_position.x] != Global.CELL_STATUS.NOT_DRAWN
 	):
-		return
-	# 移動先が移動可能エリアか
-	if Global.draw_grid[new_position.y][new_position.x] != Global.CELL_STATUS.NOT_DRAWN:
 		return
 	
 	# 移動中に設定する
@@ -52,9 +62,9 @@ func try_move(direction: Vector2) -> void:
 
 
 func finish_move() -> void:
-	# 移動可能にする
+	# 移動可能状態に戻す
 	is_moving = false
 	
 	# 移動後の処理
 	moved_cell.emit(grid_position.x, grid_position.y)
-	
+

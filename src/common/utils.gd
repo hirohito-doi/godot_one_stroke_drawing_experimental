@@ -1,5 +1,6 @@
 extends Node
 
+
 # 一筆書きが完了しているか判定する
 static func is_one_stroke_completed(grid: Array) -> bool:
 	for row in grid:
