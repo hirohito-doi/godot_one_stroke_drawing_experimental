@@ -1,3 +1,55 @@
-[gd_scene format=3 uid="uid://biupu0o6iijlg"]
+[gd_scene load_steps=9 format=3 uid="uid://biupu0o6iijlg"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_nuywp"]
+[ext_resource type="Texture2D" uid="uid://dvn7ewo2xk2gj" path="res://assets/tilesheet.png" id="2_1h2l5"]
+[ext_resource type="PackedScene" uid="uid://thiwjkxgjqor" path="res://src/ui/information.tscn" id="2_hsi2v"]
+[ext_resource type="PackedScene" uid="uid://cxeu53vji2eh6" path="res://src/character.tscn" id="4_lfl64"]
+[ext_resource type="Texture2D" uid="uid://kmcqkoc82daw" path="res://assets/character.png" id="5_ejucn"]
+[ext_resource type="PackedScene" uid="uid://c6boexvj6dw2b" path="res://src/ui/clear_message.tscn" id="6_xc8hy"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2e7u1"]
+resource_name = "tile"
+texture = ExtResource("2_1h2l5")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_lj4nj"]
+tile_size = Vector2i(48, 48)
+sources/0 = SubResource("TileSetAtlasSource_2e7u1")
 
 [node name="Main" type="Node"]
+script = ExtResource("1_nuywp")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.921569, 0.921569, 0.921569, 1)
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(224, 144)
+tile_set = SubResource("TileSet_lj4nj")
+format = 2
+layer_0/tile_data = PackedInt32Array(65537, 65536, 0, 131073, 65536, 0, 0, 0, 0, 65536, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 65539, 65536, 0, 65538, 65536, 0, 131074, 65536, 0, 131072, 65536, 0, 196608, 65536, 0, 196609, 65536, 0, 196610, 65536, 0, 196611, 65536, 0, 131075, 65536, 0)
+
+[node name="CharacterContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 224.0
+offset_top = 144.0
+offset_right = 416.0
+offset_bottom = 336.0
+
+[node name="Character" parent="CharacterContainer" instance=ExtResource("4_lfl64")]
+position = Vector2(24, 24)
+texture = ExtResource("5_ejucn")
+
+[node name="Information" parent="." instance=ExtResource("2_hsi2v")]
+
+[node name="ClearMessage" parent="." instance=ExtResource("6_xc8hy")]
+visible = false
+
+[connection signal="moved_cell" from="CharacterContainer/Character" to="." method="_on_character_moved_cell"]
