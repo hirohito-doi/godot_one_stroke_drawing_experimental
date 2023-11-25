@@ -16,8 +16,13 @@ const LEVEL_1 = [
 	[1, 1, 1, 1],
 	[1, 1, 1, 1],
 ]
-const LEVEL_1_INIT_POSITION = Vector2(0, 0)
-const STAGES = [LEVEL_1]
+const LEVEL_2 = [
+	[1, 1, 1, 1],
+	[1, 2, 1, 1],
+	[1, 0, 1, 1],
+	[1, 1, 1, 1],
+]
+const STAGES = [LEVEL_1, LEVEL_2]
 
 # 現在のグリッド状態の管理
 var draw_grid = []
