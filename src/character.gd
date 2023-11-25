@@ -1,5 +1,7 @@
 extends Sprite2D
 
+var utils = preload("res://src/common/utils.gd")
+
 signal moved_cell(x, y)
 
 var is_moving = false
@@ -32,9 +34,9 @@ func _process(delta:float) -> void:
 
 # 操作キャラクターをLEVELの初期位置に配置する
 func init_position(level:int) -> void:
-	# TODO: LEVELに合わせた初期位置の設定
-	position = position_zero + (Global.LEVEL_1_INIT_POSITION * Global.TILE_SIZE)
-	grid_position = Global.LEVEL_1_INIT_POSITION
+	var init_position = utils.get_init_position(Global.STAGES[level - 1])
+	position = position_zero + (init_position * Global.TILE_SIZE)
+	grid_position = init_position
 
 
 # 移動判定

@@ -53,3 +53,4 @@ texture = ExtResource("5_ejucn")
 visible = false
 
 [connection signal="moved_cell" from="CharacterContainer/Character" to="." method="_on_character_moved_cell"]
+[connection signal="level_up" from="ClearMessage" to="." method="_on_clear_message_level_up"]
