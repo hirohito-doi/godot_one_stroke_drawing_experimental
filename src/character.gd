@@ -50,7 +50,7 @@ func try_move(direction: Vector2) -> void:
 	# 移動可能か判定する
 	if (
 		# 移動受付中か
-		Global.can_controll == false
+		Global.can_control == false
 		# エリア範囲内か
 		or new_position.x < 0 or Global.GRID_DIMENSION - 1 < new_position.x
 		or new_position.y < 0 or Global.GRID_DIMENSION - 1 < new_position.y 
@@ -60,7 +60,7 @@ func try_move(direction: Vector2) -> void:
 		return
 	
 	# コントロール不可にする
-	Global.can_controll = false
+	Global.can_control = false
 	
 	# 現在の位置を退避して、更新する
 	var current_position = grid_position
@@ -79,7 +79,7 @@ func try_move(direction: Vector2) -> void:
 
 func finish_move() -> void:
 	# コントロール可能状態に戻す
-	Global.can_controll = true
+	Global.can_control = true
 	
 	# 移動後の処理
 	moved_cell.emit(grid_position.x, grid_position.y)
@@ -91,7 +91,7 @@ func undo_move() -> void:
 		return
 	
 	# コントロール不可にする
-	Global.can_controll = false
+	Global.can_control = false
 	
 	
 	# 履歴から移動先を決定する
@@ -117,4 +117,4 @@ func undo_move() -> void:
 
 func finish_undo() -> void:
 	# コントロール可能状態に戻す
-	Global.can_controll = true
+	Global.can_control = true

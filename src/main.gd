@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _process(delta:float) -> void:
-	if not Global.can_controll:
+	if not Global.can_control:
 		return
 	
 	# アンドゥ
@@ -32,7 +32,7 @@ func _on_character_moved_cell(x:int, y:int) -> void:
 	# クリア判定
 	if utils.is_one_stroke_completed(Global.draw_grid):
 		$ClearMessage.visible = true
-
+		
 
 # アンドゥが実行された後の処理
 func _on_character_undo_executed(x, y) -> void:
@@ -46,7 +46,7 @@ func _on_character_undo_executed(x, y) -> void:
 # 現在のLEVEL用に各設定をセットする
 func init_level_setting() -> void:
 	# コマンドの受付を可能にする
-	Global.can_controll = false
+	Global.can_control = false
 	
 	# TODO 設定していないレベルを指定した場合の処理
 	var current_grid = utils.get_grid_by_level(current_level)
@@ -56,7 +56,7 @@ func init_level_setting() -> void:
 	$CharacterContainer/Character.init_position(current_level)
 	
 	# コマンドの受付を可能にする
-	Global.can_controll = true
+	Global.can_control = true
 
 
 # 現在のLEVEL用にタイルマップを置き換える

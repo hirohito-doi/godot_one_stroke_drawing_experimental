@@ -28,4 +28,4 @@ const STAGES = [LEVEL_1, LEVEL_2]
 var draw_grid = []
 
 # キャラクターの操作・コマンドの受付が可能な状態か
-var can_controll = false
+var can_control = false
