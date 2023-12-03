@@ -101,7 +101,6 @@ func undo_move() -> void:
 	# 現在の位置を退避して、更新する
 	var current_position = grid_position
 	grid_position = new_position
-	grid_position = new_position
 	
 	# 移動先を決定する
 	var destination = Vector2(position.x + (direction.x * Global.TILE_SIZE), position.y + (direction.y * Global.TILE_SIZE))
