@@ -31,7 +31,8 @@ func _on_character_moved_cell(x:int, y:int) -> void:
 	
 	# クリア判定
 	if utils.is_one_stroke_completed(Global.draw_grid):
-		$ClearMessage.visible = true
+		Global.can_control = false
+		$ClearMessage.show_message(current_level == Global.STAGES.size())
 		
 
 # アンドゥが実行された後の処理
@@ -54,6 +55,7 @@ func init_level_setting() -> void:
 	Global.draw_grid = current_grid.duplicate(true)
 	set_tile_map()
 	$CharacterContainer/Character.init_position(current_level)
+	$Information.set_level(current_level)
 	
 	# コマンドの受付を可能にする
 	Global.can_control = true
