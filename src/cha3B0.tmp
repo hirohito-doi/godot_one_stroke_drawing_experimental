@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxeu53vji2eh6"]
+
+[ext_resource type="Script" path="res://src/character.gd" id="1_sgbxs"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jnjad"]
+load_path = "res://.godot/imported/character.png-7d161e056639ffa8fae932e906cc0673.ctex"
+
+[node name="Character" type="Sprite2D"]
+texture = SubResource("CompressedTexture2D_jnjad")
+script = ExtResource("1_sgbxs")

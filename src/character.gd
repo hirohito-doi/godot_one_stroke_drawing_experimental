@@ -3,11 +3,11 @@ extends Sprite2D
 var utils = preload("res://src/common/utils.gd")
 
 signal moved_cell(x, y)
+signal undo_executed(x, y)
 
-var is_moving = false
 
-var position_zero: Vector2
-var grid_position = Vector2.ZERO
+var position_zero: Vector2 # ピクセル単位での(0,0)に相当する位置
+var grid_position = Vector2.ZERO # グリッドで見た場合の現在の位置
 var position_history = []
 
 
@@ -37,6 +37,9 @@ func init_position(level:int) -> void:
 	var init_position = utils.get_init_position(Global.STAGES[level - 1])
 	position = position_zero + (init_position * Global.TILE_SIZE)
 	grid_position = init_position
+	
+	# 履歴をクリアする
+	position_history = []
 
 
 # 移動判定
@@ -46,8 +49,8 @@ func try_move(direction: Vector2) -> void:
 	
 	# 移動可能か判定する
 	if (
-		# 移動中か
-		is_moving
+		# 移動受付中か
+		Global.can_controll == false
 		# エリア範囲内か
 		or new_position.x < 0 or Global.GRID_DIMENSION - 1 < new_position.x
 		or new_position.y < 0 or Global.GRID_DIMENSION - 1 < new_position.y 
@@ -56,8 +59,11 @@ func try_move(direction: Vector2) -> void:
 	):
 		return
 	
-	# 移動中に設定する
-	is_moving = true
+	# コントロール不可にする
+	Global.can_controll = false
+	
+	# 現在の位置を退避して、更新する
+	var current_position = grid_position
 	grid_position = new_position
 	
 	# 移動先を決定する
@@ -67,12 +73,48 @@ func try_move(direction: Vector2) -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "position", destination, 0.15)
 	tween.tween_callback(finish_move)
-
+	
+	# 履歴を更新する
+	position_history.push_back(current_position)
 
 func finish_move() -> void:
-	# 移動可能状態に戻す
-	is_moving = false
+	# コントロール可能状態に戻す
+	Global.can_controll = true
 	
 	# 移動後の処理
 	moved_cell.emit(grid_position.x, grid_position.y)
 
+# アンドゥを実行する
+func undo_move() -> void:
+	# 履歴がなければ何もしない
+	if position_history.size() == 0:
+		return
+	
+	# コントロール不可にする
+	Global.can_controll = false
+	
+	
+	# 履歴から移動先を決定する
+	var new_position = position_history.pop_back()
+	var direction = new_position - grid_position
+	
+	# 現在の位置を退避して、更新する
+	var current_position = grid_position
+	grid_position = new_position
+	grid_position = new_position
+	
+	# 移動先を決定する
+	var destination = Vector2(position.x + (direction.x * Global.TILE_SIZE), position.y + (direction.y * Global.TILE_SIZE))
+	
+	# tweenで移動させる
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "position", destination, 0.1)
+	tween.tween_callback(finish_undo)
+	
+	# アンドゥ実行後の処理
+	undo_executed.emit(current_position.x, current_position.y)
+
+
+func finish_undo() -> void:
+	# コントロール可能状態に戻す
+	Global.can_controll = true

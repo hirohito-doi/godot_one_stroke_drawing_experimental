@@ -9,6 +9,19 @@ func _ready() -> void:
 	init_level_setting()
 
 
+func _process(delta:float) -> void:
+	if not Global.can_controll:
+		return
+	
+	# アンドゥ
+	if Input.is_action_pressed("undo"):
+		$CharacterContainer/Character.undo_move()
+	# リトライ
+	if Input.is_action_pressed("retry"):
+		init_level_setting()
+
+
+# キャラクターの移動が完了した後の処理
 func _on_character_moved_cell(x:int, y:int) -> void:
 	# ステータス更新
 	Global.draw_grid[y][x] = Global.CELL_STATUS.DRAWN
@@ -21,14 +34,29 @@ func _on_character_moved_cell(x:int, y:int) -> void:
 		$ClearMessage.visible = true
 
 
+# アンドゥが実行された後の処理
+func _on_character_undo_executed(x, y) -> void:
+	# ステータス更新
+	Global.draw_grid[y][x] = Global.CELL_STATUS.NOT_DRAWN
+	
+	# タイル更新
+	$TileMap.set_cell(0, Vector2(x, y), 0, Global.TILE_NOT_DRAWN_COORDS)
+
+
 # 現在のLEVEL用に各設定をセットする
 func init_level_setting() -> void:
+	# コマンドの受付を可能にする
+	Global.can_controll = false
+	
 	# TODO 設定していないレベルを指定した場合の処理
 	var current_grid = utils.get_grid_by_level(current_level)
 	
 	Global.draw_grid = current_grid.duplicate(true)
 	set_tile_map()
 	$CharacterContainer/Character.init_position(current_level)
+	
+	# コマンドの受付を可能にする
+	Global.can_controll = true
 
 
 # 現在のLEVEL用にタイルマップを置き換える
