@@ -26,3 +26,6 @@ const STAGES = [LEVEL_1, LEVEL_2]
 
 # 現在のグリッド状態の管理
 var draw_grid = []
+
+# キャラクターの操作・コマンドの受付が可能な状態か
+var can_control = false
